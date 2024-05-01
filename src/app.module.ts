@@ -3,6 +3,7 @@ import { ConfigModule } from '@nestjs/config'
 import { TypeOrmModule} from '@nestjs/typeorm'
 import { UsersModule } from './users/users.module';
 import { MoviesModule } from './movies/movies.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { MoviesModule } from './movies/movies.module';
       entities: [__dirname + '/**/*.entity{.js,.ts}'],
     }),
     UsersModule,
-    MoviesModule
+    MoviesModule,
+    AuthModule
   ],
   controllers: [],
   providers: [],
