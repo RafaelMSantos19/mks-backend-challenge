@@ -1,0 +1,44 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    environment:
+      POSTGRES_USER: adminUser
+      POSTGRES_PASSWORD: adminUser
+      POSTGRES_DB: MKSdb
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+  
+  api:
+    image: node:20.12.2
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "3090:3090"
+    depends_on:
+      - postgres
+      - redis
+    environment:
+      - DATABASE_URL=postgres://adminUser:adminUser@postgres:5432/MKSdb
+      - PORT=3090
+      - DB_HOST=postgres
+      - DB_USERNAME=adminUser
+      - DB_PASSWORD=adminUser
+      - DB_DATABASE=MKSdb
+      - DB_PORT=5432
+      - JWT_SECRET=fd95b208e56885276e56a8af1d20ea3b202b58320e679296f8fff039a79317f1
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    command: ["npm", "run", "start"]
+
+volumes:
+  postgres_data:
