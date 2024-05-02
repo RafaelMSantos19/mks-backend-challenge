@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Post, Res, Headers } from '@nestjs/common';
 import { Response } from 'express';
 import { UsersService } from './users.service';
 import { UserDomain } from './user.domain';
@@ -11,7 +11,7 @@ export class UsersController {
     ){}
 
     @Get()
-    async findAllUsers(@Res() response: Response){
+    async findAllUsers(@Headers('authtoken') authtoken:string, @Res() response: Response){
         const users = await this.usersService.findAllUsers()
 
         if(users.length === 0) throw new HttpException('Users not found!', HttpStatus.NOT_FOUND);
@@ -20,7 +20,7 @@ export class UsersController {
     }
 
     @Post()
-    async createUser(@Res() response: Response,@Body() user: UserDomain){
+    async createUser(@Headers('authtoken') authtoken:string, @Res() response: Response,@Body() user: UserDomain){
         const userCreated = await this.usersService.createUser(user);
         return response.status(201).json(userCreated);
     }
