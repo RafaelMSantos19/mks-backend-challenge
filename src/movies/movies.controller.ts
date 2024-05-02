@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, HttpException, HttpStatus, Res } from '@nestjs/common';
+import { Body, Controller, Get, Post, HttpException, HttpStatus, Res, Headers } from '@nestjs/common';
 import { MoviesService } from './movies.service';
 import { Response } from 'express';
 import { MovieDomain } from './movies.domain';
@@ -10,7 +10,7 @@ export class MoviesController {
     ){}
 
     @Get()
-    async findAllMovies(@Res() response: Response){
+    async findAllMovies(@Headers('authtoken') authtoken:string, @Res() response: Response){
         const movies = await this.moviesService.findAllMovies()
 
         if(movies.length === 0 ) throw new HttpException('Movies not found!', HttpStatus.NOT_FOUND);
@@ -19,7 +19,7 @@ export class MoviesController {
     }
 
     @Post()
-    async createMovie(@Res() response: Response, @Body() movie: MovieDomain){
+    async createMovie(@Headers('authtoken') authtoken:string, @Res() response: Response, @Body() movie: MovieDomain){
         const movieCreated = await this.moviesService.createMovies(movie);
         return response.status(201).json(movieCreated);
     }
