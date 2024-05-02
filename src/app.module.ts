@@ -4,6 +4,10 @@ import { TypeOrmModule} from '@nestjs/typeorm'
 import { UsersModule } from './users/users.module';
 import { MoviesModule } from './movies/movies.module';
 import { AuthModule } from './auth/auth.module';
+import { JwtMiddleware } from './jwt/jwt.middleware';
+import { JwtService } from '@nestjs/jwt';
+import { jwtService } from './jwt/jwt.service';
+import { JwtModules } from './jwt/jwt.modules';
 
 @Module({
   imports: [
@@ -21,9 +25,10 @@ import { AuthModule } from './auth/auth.module';
     }),
     UsersModule,
     MoviesModule,
-    AuthModule
+    AuthModule,
+    JwtModules,
   ],
   controllers: [],
-  providers: [],
+  providers: [JwtMiddleware,JwtService,jwtService], 
 })
-export class AppModule {}
+export class AppModule  {}
