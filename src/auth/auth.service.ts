@@ -3,6 +3,8 @@ import { UsersService } from 'src/users/users.service';
 import { JwtService } from '@nestjs/jwt'
 import { JwtPayload } from '../jwt/jwt.interface'
 import * as redis from 'redis';
+import { config } from 'dotenv';
+config();
 
 @Injectable()
 export class AuthService {
@@ -15,8 +17,8 @@ export class AuthService {
     ){
       this.redisClient = redis.createClient({
           socket:{
-            host: 'localhost',
-            port: 6379
+            host: process.env.REDIS_HOST,
+            port: Number(process.env.REDIS_PORT)
           }
       });
       this.redisClient.connect();

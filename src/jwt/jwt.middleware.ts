@@ -2,6 +2,8 @@ import { Injectable, NestMiddleware } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { Request, Response, NextFunction } from 'express';
 import * as redis from 'redis';
+import { config } from 'dotenv';
+config();
 
 declare module 'express' {
   interface Request {
@@ -19,8 +21,8 @@ export class JwtMiddleware implements NestMiddleware {
   ){
     this.redisClient = redis.createClient({
       socket:{
-        host: 'localhost',
-        port: 6379
+        host: process.env.REDIS_HOST,
+        port: Number(process.env.REDIS_PORT)
       }
     })
     this.redisClient.connect()
