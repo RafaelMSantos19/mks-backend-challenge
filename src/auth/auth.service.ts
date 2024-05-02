@@ -36,7 +36,8 @@ export class AuthService {
     async login(user: any) {
         const payload: JwtPayload = { email: user.email, sub: user.userId };
         const token = this.jwtService.sign(payload)
-        await this.redisClient.set('token',token, 3600);
+        await this.redisClient.set('token',token);
+        await this.redisClient.expire('token', 3600);
         return {
           token: token,
         };
