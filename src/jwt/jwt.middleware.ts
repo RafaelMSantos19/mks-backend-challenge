@@ -28,9 +28,9 @@ export class JwtMiddleware implements NestMiddleware {
 
   async use(req: Request, res: Response, next: NextFunction) {
 
-    const authHeader = req.headers['authorization'];    
-
-    if (authHeader && authHeader.startsWith('Bearer ')) {
+    const authHeader = req.headers['authtoken'];   
+    
+    if (authHeader) {
       const token = authHeader.slice(7, authHeader.length);
       const validationToken = await this.redisClient.get('token')
       
