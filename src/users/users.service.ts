@@ -22,4 +22,9 @@ export class UsersService {
         const createdUser = await this.usersRepository.save(newUser);
         return createdUser;
     }
+
+    async findByEmail(email: string): Promise<Users | undefined> {
+        const user = await this.usersRepository.findOne({ where: { email }  });
+        return user;
+      }
 }
